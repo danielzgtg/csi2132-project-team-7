@@ -5,7 +5,27 @@
 # ER Diagram
 
 ```plantuml
+class Chain {
+}
+
+Chain -- Address
+
+class Location {
+}
+
+class Application {
+}
+
+class Customer {
+}
+
+class Room {
+}
+
+
 ```
+
+(todo fix the shapes for the relations)
 
 (todo sync the justification from google docs)
 
