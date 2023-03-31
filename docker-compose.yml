@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15.2
+    environment:
+      POSTGRES_PASSWORD: yourchoice
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    network_mode: host
+    ports:
+      - 5432:5432
+    read_only: true
+    volumes:
+    - type: tmpfs
+      target: /var/lib/postgresql/data
+      tmpfs:
+        size: 1G
+    - type: tmpfs
+      target: /var/run/
+      tmpfs:
+        size: 256M
+    - type: bind
+      source: ./e-hotels.sql
+      target: /docker-entrypoint-initdb.d/e-hotels.sql
+      read_only: true
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+  pgadmin:
+    image: dpage/pgadmin4:2023-03-08-1
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@example.com
+      PGADMIN_DEFAULT_PASSWORD: yourchoice
+    network_mode: host
+    ports:
+      - 80:80
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    depends_on:
+      - db
