@@ -13,6 +13,18 @@
 <fmt:parseNumber var="capacity" integerOnly="true" value="${param.capacity}"/>
 <fmt:parseNumber var="price" integerOnly="true" value="${param.price}"/>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("customer".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    SELECT 1 FROM customer WHERE customer.ssn_or_sin = ?;
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:query dataSource="${db}" var="result">
     SELECT room.room_id, room.address_of_hotel, room.area_of_hotel, hotel.address_central_office FROM room 
    INNER JOIN hotel on hotel.address_of_hotel = room.address_of_hotel and hotel.area_of_hotel = room.area_of_hotel
@@ -78,4 +90,7 @@
 </tr>
 </c:forEach>
 </table>
+<nav>
+<a href="profile.jsp">Back</a>
+</nav>
 <%@ include file="WEB-INF/footer.html" %>

@@ -13,9 +13,7 @@
     if (authSin == 0) throw new SecurityException();
     pageContext.setAttribute("authSin", authSin); %>
 <sql:query dataSource="${db}" var="result">
-    SELECT employee.full_name, employee.address FROM employee
-    WHERE employee.ssn_or_sin = ?
-    LIMIT 1;
+    SELECT 1 FROM employee WHERE employee.ssn_or_sin = ? LIMIT 1;
     <sql:param value="${authSin}"/>
 </sql:query>
 <% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
@@ -34,3 +32,8 @@ Employee deleted
 <a href="profile_login.jsp">Back</a>
 </nav>
 <%@ include file="../WEB-INF/footer.html" %>
+<%
+    Cookie cookie = new Cookie("employee", "");
+    cookie.setMaxAge(0);
+    response.addCookie(cookie);
+%>

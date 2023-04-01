@@ -3,6 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("customer".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    SELECT 1 FROM customer WHERE customer.ssn_or_sin = ?;
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:query dataSource="${db}" var="result">
     SELECT room.room_price_cents, room.capacity, room.extended_capacity, room.problems_or_damages FROM room
     WHERE room.room_id = ?
@@ -48,4 +60,7 @@
 <label>End Date: <input type="date" name="end" value="${fn:escapeXml(param.end)}"></label>
 <button>Book</button>
 </form>
+<nav>
+<a href="search.jsp">Back to Search</a>
+</nav>
 <%@ include file="WEB-INF/footer.html" %>
