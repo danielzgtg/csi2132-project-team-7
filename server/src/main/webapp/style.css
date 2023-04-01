@@ -1,0 +1,13 @@
+
+nav > a, a.danger {
+    border: 1px solid black;
+    background: skyblue;
+    padding: 16px;
+    margin: 8px;
+    display: block;
+}
+
+a.danger {
+    background: red;
+    color: white;
+}

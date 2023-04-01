@@ -14,9 +14,10 @@
 <sql:param value="${param.area}"/>
 </sql:query>
 <%@ include file="WEB-INF/header.html" %>
+<h1>Customer Booking</h1>
 <table width="100%" border="1">
 <c:forEach var="row" items="${result.rows}">
-<tr><td>Room Id: </td><td>${fn:escapeXml(param.room_id)}</td></tr>
+<tr><td>Room Id: </td><td>${fn:escapeXml(param.room)}</td></tr>
 <tr><td>Hotel: </td><td>${fn:escapeXml(param.hotel)}</td></tr>
 <tr><td>Hotel Area: </td><td>${fn:escapeXml(param.area)}</td></tr>
 <tr><td>Price: </td><td>${fn:escapeXml(row.room_price_cents)} cents</td></tr>
@@ -25,7 +26,7 @@
 <tr><td>Problems or Damages</td><td>${fn:escapeXml(row.problems_or_damages)}</td></tr>
 </c:forEach>
 </table>
-<form action="book.jsp" method="post">
+<form action="room_book.jsp" method="post">
 <input type="number" name="room" hidden value="${fn:escapeXml(param.room)}"/>
 <input type="text" name="hotel" hidden value="${fn:escapeXml(param.hotel)}"/>
 <input type="text" name="area" hidden value="${fn:escapeXml(param.area)}"/>

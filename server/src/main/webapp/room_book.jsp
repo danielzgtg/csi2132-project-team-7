@@ -9,14 +9,16 @@
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:update dataSource="${db}">
     INSERT INTO booking_or_renting (address_of_hotel, area_of_hotel, room_id, start_date, end_date, customer_ssn_or_sin, was_booked, is_renting)
-    VALUES (?, ?, ?, ?, ?, 123123123, true, false);
+    VALUES (?, ?, ?, ?, ?, ?, true, false);
 <sql:param value="${param.hotel}"/>
 <sql:param value="${param.area}"/>
 <sql:param value="${Integer.parseInt(param.room)}"/>
 <sql:dateParam value="${start}"/>
 <sql:dateParam value="${end}"/>
+<sql:param value="${123123123}"/>
 </sql:update>
 <%@ include file="WEB-INF/header.html" %>
+<h1>Customer Booking</h1>
 Booking Successful!
 <table width="100%" border="1">
 <tr><td>Hotel: </td><td>${fn:escapeXml(param.hotel)}</td></tr>
