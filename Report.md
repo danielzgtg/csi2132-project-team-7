@@ -8,9 +8,10 @@
 | Haris Vohra | 0300174288 |
 | Mahenth Sivaruban 0300194748 |
 
-The ER diagram and the Relational Database Schema are identical to the ones in Deliverable 1.
+The ER diagram and the Relational Database Schema are mostly identical to the ones in Deliverable 1.
 Please see the previous submission if it is necessary to consult them.
 Some less important constraints were relaxed to improve performance and storage.
+The columns were changed to support user authentication, and the area feature.
 
 ## A: The DBMS and the programming languages that you have used in your implementation of the application.
 
