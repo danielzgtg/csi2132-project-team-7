@@ -13,24 +13,59 @@
 <sql:param value="${param.hotel}"/>
 <sql:param value="${param.area}"/>
 </sql:query>
+<sql:query dataSource="${db}" var="amenities_have">
+    SELECT offers.amenity_name FROM offers
+    WHERE offers.room_id = ?
+    AND offers.address_of_hotel = ?
+    AND offers.area_of_hotel = ?;
+<sql:param value="${Integer.parseInt(param.room)}"/>
+<sql:param value="${param.hotel}"/>
+<sql:param value="${param.area}"/>
+</sql:query>
+<sql:query dataSource="${db}" var="amenities_all">
+    SELECT amenity.name FROM amenity;
+</sql:query>
 <%@ include file="../WEB-INF/header.html" %>
-<h1>Employee Booking</h1>
-<form action="room_update.jsp" method="post" autocomplete="off">
+<h1>Employee</h1>
+<form action="room_remove_amenity.jsp" method="post" autocomplete="off" id="remove_amenity">
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
 <input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+</form>
+<form action="room_update.jsp" method="post" autocomplete="off" id="update">
+<input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
+<input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+</form>
 <table width="100%" border="1">
 <c:forEach var="row" items="${result.rows}">
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
 <tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
-<tr><td><label for="price">Price:</label></td><td><input type="number" id="price" name="price" value="${fn:escapeXml(row.room_price_cents)}"> cents</td></tr>
-<tr><td><label for="capacity">Capacity:</label></td><td><input type="number" id="capacity" name="capacity" value="${fn:escapeXml(row.capacity)}"></td></tr>
-<tr><td><label for="extended">Extended Capacity:</label></td><td><input type="number" id="extended" name="extended" value="${fn:escapeXml(row.extended_capacity)}"></td></tr>
-<tr><td><label for="problems">Problems or Damages:</label></td><td><textarea id="problems" name="problems"><c:out value="${row.problems_or_damages}"/></textarea></td></tr>
+<tr><td><label for="price">Price:</label></td><td><input form="update" type="number" id="price" name="price" value="${fn:escapeXml(row.room_price_cents)}"> cents</td></tr>
+<tr><td><label for="capacity">Capacity:</label></td><td><input form="update" type="number" id="capacity" name="capacity" value="${fn:escapeXml(row.capacity)}"></td></tr>
+<tr><td><label for="extended">Extended Capacity:</label></td><td><input form="update" type="number" id="extended" name="extended" value="${fn:escapeXml(row.extended_capacity)}"></td></tr>
+<tr><td><label for="problems">Problems or Damages:</label></td><td><textarea form="update" id="problems" name="problems"><c:out value="${row.problems_or_damages}"/></textarea></td></tr>
+<tr><td>Amenities:</td><td><ul>
+<c:forEach var="amenity" items="${amenities_have.rows}">
+<li><c:out value="${amenity.amenity_name}"/>
+<button form="remove_amenity" name="amenity" value="${fn:escapeXml(amenity.amenity_name)}">X</button></li>
+</c:forEach>
+</ul></td></tr>
 </c:forEach>
 </table>
-<button>Update</button>
+<button form="update">Update</button>
+<form action="room_add_amenity.jsp" method="post" autocomplete="off">
+<input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
+<input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+<label>Amenity: <select name="amenity">
+<c:forEach var="amenity" items="${amenities_all.rows}">
+<li><c:out value="${amenity.name}"/>
+<option value="${fn:escapeXml(amenity.name)}"><c:out value="${amenity.name}"/></option></li>
+</c:forEach>
+</select></label>
+<button>Add</button>
 </form>
 <form action="room_delete.jsp" method="post">
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>

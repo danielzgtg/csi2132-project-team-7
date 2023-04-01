@@ -13,17 +13,31 @@
 <sql:param value="${param.hotel}"/>
 <sql:param value="${param.area}"/>
 </sql:query>
+<sql:query dataSource="${db}" var="amenities_have">
+    SELECT offers.amenity_name FROM offers
+    WHERE offers.room_id = ?
+    AND offers.address_of_hotel = ?
+    AND offers.area_of_hotel = ?;
+    <sql:param value="${Integer.parseInt(param.room)}"/>
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+</sql:query>
 <%@ include file="WEB-INF/header.html" %>
 <h1>Customer</h1>
 <table width="100%" border="1">
 <c:forEach var="row" items="${result.rows}">
-<tr><td>Room Id:</td><td>${fn:escapeXml(param.room)}</td></tr>
-<tr><td>Hotel:</td><td>${fn:escapeXml(param.hotel)}</td></tr>
-<tr><td>Hotel Area:</td><td>${fn:escapeXml(param.area)}</td></tr>
-<tr><td>Price:</td><td>${fn:escapeXml(row.room_price_cents)} cents</td></tr>
-<tr><td>Capacity:</td><td>${fn:escapeXml(row.capacity)}</td></tr>
-<tr><td>Extended Capacity:</td><td>${fn:escapeXml(row.extended_capacity)}</td></tr>
-<tr><td>Problems or Damages:</td><td>${fn:escapeXml(row.problems_or_damages)}</td></tr>
+<tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
+<tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
+<tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
+<tr><td>Price:</td><td><c:out value="${row.room_price_cents}"/> cents</td></tr>
+<tr><td>Capacity:</td><td><c:out value="${row.capacity}"/></td></tr>
+<tr><td>Extended Capacity:</td><td><c:out value="${row.extended_capacity}"/></td></tr>
+<tr><td>Problems or Damages:</td><td><c:out value="${row.problems_or_damages}"/></td></tr>
+<tr><td>Amenities:</td><td><ul>
+<c:forEach var="amenity" items="${amenities_have.rows}">
+<li><c:out value="${amenity.amenity_name}"/></li>
+</c:forEach>
+</ul></td></tr>
 </c:forEach>
 </table>
 <form action="room_book.jsp" method="post" autocomplete="off">
