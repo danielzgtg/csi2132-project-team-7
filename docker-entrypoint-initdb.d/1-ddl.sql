@@ -51,13 +51,6 @@ CREATE TABLE amenity
     name VARCHAR(255) PRIMARY KEY
 );
 
-INSERT INTO amenity (name)
-VALUES ('TV'),
-       ('AC'),
-       ('Fridge'),
-       ('Sea View'),
-       ('Mountain View');
-
 CREATE TABLE offers
 (
     address_of_hotel VARCHAR(255) NOT NULL,

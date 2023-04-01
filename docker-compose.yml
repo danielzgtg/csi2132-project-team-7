@@ -24,8 +24,8 @@ services:
       tmpfs:
         size: 256M
     - type: bind
-      source: ./e-hotels.sql
-      target: /docker-entrypoint-initdb.d/e-hotels.sql
+      source: ./docker-entrypoint-initdb.d
+      target: /docker-entrypoint-initdb.d
       read_only: true
     restart: always
     deploy:
