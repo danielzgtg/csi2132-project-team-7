@@ -24,7 +24,8 @@ We chose to stick with the recommended technologies so that we can learn new tec
 ## B: Specific steps to guide someone to install your applications
 
 1. Ensure that Docker is installed
-2. Run `docker compose up`
+2. Run `./gradlew war` in `./server`
+3. Run `docker compose up`
 
 The will also run the application after installing it in Docker.
 
@@ -41,3 +42,7 @@ The SQL code in in the `.jsp` files in the application.
 ## 3. All the code that is necessary for running your application
 
 All the necessary code is included in this zip.
+
+## You are requested to do the following:
+
+See `Report.txt`
