@@ -32,18 +32,35 @@ services:
       resources:
         limits:
           memory: 1G
-  pgadmin:
-    image: dpage/pgadmin4:2023-03-08-1
-    environment:
-      PGADMIN_DEFAULT_EMAIL: test@example.com
-      PGADMIN_DEFAULT_PASSWORD: yourchoice
+  server:
+    image: tomcat:11.0.0-jre17-temurin-jammy
     network_mode: host
     ports:
-      - 80:80
+      - 8080:8080
+    volumes:
+    - type: bind
+      source: ./server/build/libs/server.war
+      target: /usr/local/tomcat/webapps/ROOT.war
+      read_only: true
     restart: always
     deploy:
       resources:
         limits:
-          memory: 256M
+          memory: 1G
     depends_on:
       - db
+  # pgadmin:
+  #   image: dpage/pgadmin4:2023-03-08-1
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: test@example.com
+  #     PGADMIN_DEFAULT_PASSWORD: yourchoice
+  #   network_mode: host
+  #   ports:
+  #     - 80:80
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 256M
+  # depends_on:
+  #   - db
