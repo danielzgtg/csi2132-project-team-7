@@ -1,16 +1,10 @@
-<%@ page import = "java.io.*,java.util.*,java.sql.*"%>
-<%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
-<sql:setDataSource dataSource="jdbc/db" var="db"/>s
-<html>
-<head>
-    <title>JSTL sql:query Tag</title>
-</head>
-<body>
+<sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:query dataSource="${db}" var="result">
     SELECT * from hotel;
 </sql:query>
+<%@ include file="WEB-INF/header.html" %>
 <table border = "1" width = "100%">
     <tr>
         <th>Emp ID</th>
@@ -27,5 +21,4 @@
         </tr>
     </c:forEach>
 </table>
-</body>
-</html>
+<%@ include file="WEB-INF/footer.html" %>
