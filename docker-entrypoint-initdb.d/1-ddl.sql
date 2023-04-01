@@ -5,13 +5,6 @@ CREATE TABLE employee
     address    VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE manager
-(
-    manager_ssn_or_sin integer REFERENCES employee (ssn_or_sin),
-    managed_ssn_or_sin integer PRIMARY KEY REFERENCES employee (ssn_or_sin),
-    CHECK (managed_ssn_or_sin != manager.managed_ssn_or_sin)
-);
-
 CREATE TABLE chain
 (
     address_central_office VARCHAR(255) PRIMARY KEY,

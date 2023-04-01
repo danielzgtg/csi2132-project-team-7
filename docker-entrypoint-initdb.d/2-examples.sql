@@ -22,6 +22,19 @@ INSERT INTO area (area)
 VALUES ('Ottawa'),
        ('Kanata');
 
+INSERT INTO role (name)
+VALUES ('Office'),
+       ('Kitchen'),
+       ('Housekeeping'),
+       ('Concierge'),
+       ('Security'),
+       ('Porter'),
+       ('Recreation'),
+       ('Host'),
+       ('Technician'),
+       ('Parking')
+;
+
 INSERT INTO hotel (address_of_hotel, area_of_hotel, address_central_office, ranking, contact_email_address,
                    contact_phone_num, manager_ssn_or_sin)
 VALUES ('886 Fusce St.', 'Kanata', '392 Lectus. St.', 2, 'ac@outlook.net', '(615) 414-9412', 123456789),

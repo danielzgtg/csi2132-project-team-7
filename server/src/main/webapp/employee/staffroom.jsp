@@ -24,7 +24,14 @@
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
+<c:url value="hr.jsp" var="hr">
+<c:param name="hotel" value="${param.hotel}" />
+<c:param name="area" value="${param.area}" />
+</c:url>
+<nav>
 <a href="${reception}">To Front Desk</a>
+<a href="${hr}">To HR</a>
+</nav>
 <form action="staffroom_update.jsp" method="post" autocomplete="off">
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
