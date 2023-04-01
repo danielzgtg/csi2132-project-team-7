@@ -6,7 +6,7 @@
 | --- | --- |
 | Daniel Tang | 0300068985 |
 | Haris Vohra | 0300174288 |
-| Mahenth Sivaruban 0300194748 |
+| Mahenth Sivaruban | 0300194748 |
 
 The ER diagram and the Relational Database Schema are mostly identical to the ones in Deliverable 1.
 Please see the previous submission if it is necessary to consult them.
