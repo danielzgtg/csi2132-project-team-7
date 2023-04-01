@@ -30,9 +30,9 @@
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
 <table width="100%" border="1">
 <c:forEach var="row" items="${hotel.rows}">
+<tr><td>Chain:</td><td><c:out value="${row.address_central_office}"/></td></tr>
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
-<tr><td>Chain:</td><td><c:out value="${row.address_central_office}"/></td></tr>
 <tr><td><label for="ranking">Ranking:</label></td><td><select name="ranking" id="ranking">
 <option value="1" ${row.ranking == 1 ? "selected" : ""}>1-star</option>
 <option value="2" ${row.ranking == 2 ? "selected" : ""}>2-star</option>
@@ -83,5 +83,5 @@
 </table>
 <button>Add</button>
 </form>
-<a href="hotels.jsp">Back to Hotels</a>
+<a href="staffroom_list.jsp">Back to Hotels</a>
 <%@ include file="../WEB-INF/footer.html" %>

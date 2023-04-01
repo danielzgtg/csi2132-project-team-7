@@ -7,16 +7,23 @@
 <% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:update dataSource="${db}">
-    DELETE FROM hotel WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?;
-<sql:param value="${param.hotel}"/>
-<sql:param value="${param.area}"/>
+    INSERT INTO chain (address_central_office, contact_email_address, contact_phone_num, owner_ssn_or_sin)
+    VALUES (?, ?, ?, ?);
+<sql:param value="${param.chain}"/>
+<sql:param value="${param.email}"/>
+<sql:param value="${param.phone}"/>
+<sql:param value="${123456789}"/>
 </sql:update>
 <%@ include file="../WEB-INF/header.html" %>
-<h1>Employee</h1>
-Hotel deleted
+<h1>Owner</h1>
+Chain Added
 <table width="100%" border="1">
-<tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
-<tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
+<tr><td>Central Office Address:</td><td><c:out value="${param.chain}"/></td></tr>
+<tr><td>Email:</td><td><c:out value="${param.email}"/></td></tr>
+<tr><td>Phone:</td><td><c:out value="${param.phone}"/></td></tr>
 </table>
-<a href="staffroom_list.jsp">Back to Hotels</a>
+<c:url value="chain.jsp" var="url">
+<c:param name="chain" value="${param.chain}" />
+</c:url>
+<a href="${url}">To Chain</a>
 <%@ include file="../WEB-INF/footer.html" %>

@@ -18,7 +18,7 @@
 </sql:update>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Employee</h1>
-Room updated
+Room added
 <table width="100%" border="1">
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
