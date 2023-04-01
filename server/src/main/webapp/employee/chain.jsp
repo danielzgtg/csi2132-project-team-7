@@ -4,11 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    SELECT 1 FROM employee WHERE employee.ssn_or_sin = ?;
+<sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+            pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:query dataSource="${db}" var="chain">
     SELECT chain.contact_email_address, chain.contact_phone_num, chain.owner_ssn_or_sin FROM chain
-    WHERE chain.address_central_office = ?
+    WHERE chain.address_central_office = ? AND chain.owner_ssn_or_sin = ?
     ;
 <sql:param value="${param.chain}"/>
+<sql:param value="${authSin}"/>
 </sql:query>
 <sql:query dataSource="${db}" var="hotels">
     SELECT hotel.address_of_hotel, hotel.area_of_hotel FROM hotel
@@ -68,5 +81,7 @@
 </table>
 <button>Add</button>
 </form>
+<nav>
 <a href="chain_list.jsp">Back to Chains</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>

@@ -3,6 +3,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    ( SELECT 1 FROM employment e WHERE e.address_of_hotel = ? AND e.area_of_hotel = ? AND e.employee_ssn_or_sin = ? )
+    UNION
+    ( SELECT 1 FROM hotel WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ? AND hotel.manager_ssn_or_sin = ? )
+    ;
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:query dataSource="${db}" var="result">
     SELECT room.room_price_cents, room.capacity, room.extended_capacity, room.problems_or_damages FROM room
     WHERE room.room_id = ?
@@ -89,5 +109,7 @@
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
+<nav>
 <a href="${url}">Back to Staffroom</a>
+    
 <%@ include file="../WEB-INF/footer.html" %>

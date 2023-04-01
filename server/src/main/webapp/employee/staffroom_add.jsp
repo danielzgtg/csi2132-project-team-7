@@ -6,6 +6,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    SELECT 1 FROM employee WHERE employee.ssn_or_sin = ?;
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:update dataSource="${db}">
     INSERT INTO hotel (address_of_hotel, area_of_hotel, address_central_office, ranking, contact_email_address, contact_phone_num, manager_ssn_or_sin)
     VALUES (?, ?, ?, ?, ?, ?, ?); 
@@ -15,7 +27,7 @@
 <sql:param value="${Integer.parseInt(param.ranking)}"/>
 <sql:param value="${param.email}"/>
 <sql:param value="${param.phone}"/>
-<sql:param value="${123456789}"/>
+<sql:param value="${authSin}"/>
 </sql:update>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Owner</h1>
@@ -32,5 +44,7 @@ Hotel Added
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
+<nav>
 <a href="${url}">To Staffroom</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>

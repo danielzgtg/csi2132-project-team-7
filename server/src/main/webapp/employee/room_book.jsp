@@ -8,6 +8,26 @@
 <fmt:parseDate var="start" pattern="yyyy-MM-dd" value="${param.start}"/>
 <fmt:parseDate var="end" pattern="yyyy-MM-dd" value="${param.end}"/>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    ( SELECT 1 FROM employment e WHERE e.address_of_hotel = ? AND e.area_of_hotel = ? AND e.employee_ssn_or_sin = ? )
+    UNION
+    ( SELECT 1 FROM hotel WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ? AND hotel.manager_ssn_or_sin = ? )
+    ;
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:update dataSource="${db}">
     INSERT INTO customer (ssn_or_sin, full_name, address) VALUES (?, ?, ?) ON CONFLICT DO NOTHING;
 <sql:param value="${Integer.parseInt(param.sin)}"/>
@@ -40,5 +60,7 @@ Booking Successful!
 <c:param name="area" value="${param.area}" />
 <c:param name="room" value="${param.room}" />
 </c:url>
+<nav>
 <a href="${url}">Back to Room</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>

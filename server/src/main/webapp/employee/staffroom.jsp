@@ -4,6 +4,29 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    ( SELECT 1 FROM employment e WHERE e.address_of_hotel = ? AND e.area_of_hotel = ? AND e.employee_ssn_or_sin = ? )
+    UNION
+    ( SELECT 1 FROM hotel INNER JOIN chain ON hotel.address_central_office = chain.address_central_office
+    WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?
+    AND (hotel.manager_ssn_or_sin = ? OR chain.owner_ssn_or_sin = ?) )
+    ;
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+    <sql:param value="${param.hotel}"/>
+    <sql:param value="${param.area}"/>
+    <sql:param value="${authSin}"/>
+    <sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:query dataSource="${db}" var="hotel">
     SELECT hotel.address_central_office, hotel.ranking, hotel.contact_email_address, hotel.contact_phone_num, hotel.manager_ssn_or_sin FROM hotel
     WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?
@@ -90,5 +113,7 @@
 </table>
 <button>Add</button>
 </form>
+<nav>
 <a href="staffroom_list.jsp">Back to Hotels</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>

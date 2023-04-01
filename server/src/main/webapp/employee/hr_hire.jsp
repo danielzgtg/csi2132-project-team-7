@@ -6,6 +6,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
+<% int authSin = 0;
+    for (Cookie cookie : request.getCookies()) { if ("employee".equals(cookie.getName())) {
+        authSin = Integer.parseInt(cookie.getValue());
+    } }
+    if (authSin == 0) throw new SecurityException();
+    pageContext.setAttribute("authSin", authSin); %>
+<sql:query dataSource="${db}" var="auth">
+    SELECT 1 FROM hotel
+    INNER JOIN chain on hotel.address_central_office = chain.address_central_office
+    WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?
+    AND (hotel.manager_ssn_or_sin = ? OR chain.owner_ssn_or_sin = ?);
+<sql:param value="${param.hotel}"/>
+<sql:param value="${param.area}"/>
+<sql:param value="${authSin}"/>
+<sql:param value="${authSin}"/>
+</sql:query>
+<% if (((org.apache.taglibs.standard.tag.common.sql.ResultImpl)
+        pageContext.getAttribute("auth")).getRowCount() != 1) { throw new SecurityException(); } %>
 <sql:update dataSource="${db}">
     INSERT INTO employment (address_of_hotel, area_of_hotel, employee_ssn_or_sin, role_name)
     VALUES (?, ?, ?, ?); 
@@ -27,5 +45,7 @@ Employee hired
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
+<nav>
 <a href="${url}">Back to HR</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>

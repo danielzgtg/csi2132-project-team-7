@@ -10,7 +10,7 @@ CREATE TABLE chain
     address_central_office VARCHAR(255) PRIMARY KEY,
     contact_email_address  VARCHAR(255) NOT NULL,
     contact_phone_num      VARCHAR(255) NOT NULL,
-    owner_ssn_or_sin       INTEGER      NOT NULL REFERENCES employee (ssn_or_sin)
+    owner_ssn_or_sin       INTEGER      NOT NULL REFERENCES employee (ssn_or_sin) ON DELETE CASCADE
 );
 
 CREATE TABLE area
@@ -26,7 +26,7 @@ CREATE TABLE hotel
     ranking                SMALLINT     NOT NULL,
     contact_email_address  VARCHAR(255) NOT NULL,
     contact_phone_num      VARCHAR(255) NOT NULL,
-    manager_ssn_or_sin     INTEGER      NOT NULL REFERENCES employee (ssn_or_sin),
+    manager_ssn_or_sin     INTEGER      NOT NULL REFERENCES employee (ssn_or_sin) ON DELETE CASCADE,
     PRIMARY KEY (address_of_hotel, area_of_hotel),
     CHECK (ranking BETWEEN 1 AND 5)
 );

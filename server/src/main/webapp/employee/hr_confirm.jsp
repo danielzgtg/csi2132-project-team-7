@@ -31,5 +31,7 @@
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
+<nav>
 <a href="${url}">Cancel</a>
+</nav>
 <%@ include file="../WEB-INF/footer.html" %>
