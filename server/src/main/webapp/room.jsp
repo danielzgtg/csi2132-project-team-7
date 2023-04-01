@@ -10,8 +10,8 @@
     AND room.area_of_hotel = ?
     LIMIT 1;
 <sql:param value="${Integer.parseInt(param.room)}"/>
-<sql:param value="${String.valueOf(param.hotel)}"/>
-<sql:param value="${String.valueOf(param.area)}"/>
+<sql:param value="${param.hotel}"/>
+<sql:param value="${param.area}"/>
 </sql:query>
 <%@ include file="WEB-INF/header.html" %>
 <table width="100%" border="1">

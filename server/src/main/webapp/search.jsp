@@ -1,15 +1,18 @@
-<%@ page import="java.util.Date,java.text.SimpleDateFormat,java.lang.Integer,java.lang.String" %>
+<%@ page import="java.util.Date,java.util.Objects,java.text.SimpleDateFormat,java.lang.Integer,java.lang.String" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<sql:setDataSource dataSource="jdbc/db" var="db"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%
     SimpleDateFormat parser= new SimpleDateFormat("yyyy-MM-dd");
-    String sText = request.getParameter("start");
+    String sText = Objects.toString(request.getParameter("start"), "");
     Date sDate = parser.parse(sText.length() == 0 ? "3000-01-01" : sText);
-    String eText = request.getParameter("end");
+    String eText = Objects.toString(request.getParameter("end"), "");
     Date eDate = parser.parse(eText.length() == 0 ? "2000-01-01" : eText);
 %>
+<fmt:parseNumber var="capacity" integerOnly="true" value="${param.capacity}"/>
+<fmt:parseNumber var="price" integerOnly="true" value="${param.price}"/>
+<sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:query dataSource="${db}" var="result">
     SELECT room.room_id, room.address_of_hotel, room.area_of_hotel, hotel.address_central_office FROM room 
    INNER JOIN hotel on hotel.address_of_hotel = room.address_of_hotel and hotel.area_of_hotel = room.area_of_hotel
@@ -28,15 +31,15 @@
     ;
 <sql:dateParam value="<%= sDate %>"/>
 <sql:dateParam value="<%= eDate %>"/>
-<sql:param value="${param.capacity.length() == 0 ? 0 : Integer.parseInt(param.capacity)}"/>
-<sql:param value="${String.valueOf(param.area)}"/>
-<sql:param value="${String.valueOf(param.chain)}"/>
-<sql:param value="${param.price.length() == 0 ? Integer.MAX_VALUE : Integer.parseInt(param.price)}"/>
+<sql:param value="${capacity == null ? 0 : capacity}"/>
+<sql:param value="${Objects.toString(param.area, '')}"/>
+<sql:param value="${Objects.toString(param.chain, '')}"/>
+<sql:param value="${price == null ? Integer.MAX_VALUE : price}"/>
 </sql:query>
 <%@ include file="WEB-INF/header.html" %>
 <form action="search.jsp">
-<label>Start Date: <input type="date" name="start" value="${fn:escapeXml(param.start)}"></label>
-<label>End Date: <input type="date" name="end" value="${fn:escapeXml(param.end)}"></label>
+<label>Start Date: <input type="date" name="start" onchange="this.form.submit()" value="${fn:escapeXml(param.start)}"></label>
+<label>End Date: <input type="date" name="end" onchange="this.form.submit()" value="${fn:escapeXml(param.end)}"></label>
 <label>Capacity: <select name="capacity">
 <option value="0" ${param.capacity.equals("0") ? "selected" : ""}>Any</option>
 <option value="1" ${param.capacity.equals("1") ? "selected" : ""}>Single</option>
