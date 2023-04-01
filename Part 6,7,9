@@ -67,30 +67,30 @@ END;
 
 Part 7
 
-1. Index on the "hotel" table for the "hotel_chain_id" column:
+1. Index on the "hotel" table for the "address_central_office" column:
 
  
-CREATE INDEX hotel_hotel_chain_id_idx ON hotel (hotel_chain_id);
+CREATE INDEX hotel_hotel_chain_id_idx ON hotel (address_central_office);
 
  
 This index would be useful for queries that involve filtering hotels by their hotel chain. For example, 
 if a user wants to see all hotels belonging to a specific hotel chain, the database could use this index to quickly 
-find all hotels with the corresponding "hotel_chain_id" value. 
+find all hotels with the corresponding "address_central_office" value.
 
 
 
 
-2. Index on the "room" table for the "hotel_id" column:
+2. Index on the "room" table for the "address_of_hotel" column:
 
  
 
-CREATE INDEX room_hotel_id_idx ON room (hotel_id);
+CREATE INDEX room_hotel_id_idx ON room (address_of_hotel);
 
  
 
 This index would be useful for queries that involve filtering rooms by their hotel. For example, 
 if a user wants to see all rooms available at a specific hotel, the database could use this index to quickly 
-find all rooms with the corresponding "hotel_id" value. 
+find all rooms with the corresponding "address_of_hotel" value.
 
 
 
@@ -116,21 +116,20 @@ Part 9
 View 1: Number of available rooms per area
 
 CREATE VIEW available_rooms_per_area AS
-SELECT h.hotel_id, h.area, COUNT(r.room_id) AS available_rooms
+SELECT h.address_of_hotel, h.area_of_hotel, COUNT(r.room_id) AS available_rooms
 FROM Hotel h
-INNER JOIN Room r ON h.hotel_id = r.hotel_id
-LEFT JOIN Renting rt ON r.room_id = rt.room_id
-    AND rt.start_date <= NOW() AND rt.end_date >= NOW()
-WHERE rt.renting_id IS NULL
-GROUP BY h.hotel_id, h.area;
+INNER JOIN room r ON h.address_of_hotel = r.address_of_hotel
+LEFT JOIN booking_or_renting rt ON r.room_id = rt.room_id
+AND rt.start_date <= NOW() AND rt.end_date >= NOW()
+WHERE rt.address_of_hotel IS NULL
+GROUP BY h.address_of_hotel, h.area_of_hotel;
 
 
 View 2: Capacity of all rooms of a specific hotel
 
 CREATE VIEW room_capacity_per_hotel AS
-SELECT r.hotel_id, r.capacity, COUNT(r.room_id) AS room_count
+SELECT r.address_of_hotel, r.capacity, COUNT(r.room_id) AS room_count
 FROM Room r
-WHERE r.hotel_id = <hotel_id>
-GROUP BY r.hotel_id, r.capacity;
+GROUP BY r.address_of_hotel, r.capacity;
 
 

@@ -111,3 +111,23 @@ CREATE TABLE employment
     PRIMARY KEY (address_of_hotel, employee_ssn_or_sin),
     FOREIGN KEY (address_of_hotel, area_of_hotel) REFERENCES hotel (address_of_hotel, area_of_hotel)
 );
+
+
+
+CREATE INDEX hotel_hotel_chain_id_idx ON hotel (address_central_office);
+CREATE INDEX room_hotel_id_idx ON room (address_of_hotel);
+CREATE INDEX customer_registration_date_idx ON customer (registration_date);
+
+CREATE VIEW available_rooms_per_area AS
+SELECT h.address_of_hotel, h.area_of_hotel, COUNT(r.room_id) AS available_rooms
+FROM Hotel h
+INNER JOIN room r ON h.address_of_hotel = r.address_of_hotel
+LEFT JOIN booking_or_renting rt ON r.room_id = rt.room_id
+AND rt.start_date <= NOW() AND rt.end_date >= NOW()
+WHERE rt.address_of_hotel IS NULL
+GROUP BY h.address_of_hotel, h.area_of_hotel;
+
+CREATE VIEW room_capacity_per_hotel AS
+SELECT r.address_of_hotel, r.capacity, COUNT(r.room_id) AS room_count
+FROM Room r
+GROUP BY r.address_of_hotel, r.capacity;
