@@ -8,6 +8,9 @@ VALUES ('TV'),
 INSERT INTO employee (ssn_or_sin, full_name, address)
 VALUES (123456789, 'Verena Kantere', '75 Laurier Ave E, Ottawa, ON K1N 6N5');
 
+INSERT INTO customer (ssn_or_sin, full_name, address)
+VALUES (123123123, 'Test', '1 Main Street');
+
 INSERT INTO chain (address_central_office, contact_email_address, contact_phone_num, owner_ssn_or_sin)
 VALUES ('392 Lectus. St.', 'vivamus@aol.couk', '(379) 950-3166', 123456789),
        ('392 Feugiat Rd.', 'nulla.magna@google.com', '(866) 622-8583', 123456789),

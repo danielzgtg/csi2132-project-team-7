@@ -76,7 +76,7 @@ CREATE TABLE customer
     ssn_or_sin        INTEGER PRIMARY KEY,
     full_name         VARCHAR(255) NOT NULL,
     address           VARCHAR(255) NOT NULL,
-    registration_date DATE         NOT NULL,
+    registration_date DATE         NOT NULL DEFAULT now(),
     CHECK (registration_date > '2023-03-27')
 );
 
@@ -111,8 +111,6 @@ CREATE TABLE employment
     PRIMARY KEY (address_of_hotel, employee_ssn_or_sin),
     FOREIGN KEY (address_of_hotel, area_of_hotel) REFERENCES hotel (address_of_hotel, area_of_hotel)
 );
-
-
 
 CREATE INDEX hotel_hotel_chain_id_idx ON hotel (address_central_office);
 CREATE INDEX room_hotel_id_idx ON room (address_of_hotel);
