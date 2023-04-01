@@ -1,13 +1,8 @@
 
-nav > a, a.danger {
+nav > a {
     border: 1px solid black;
     background: skyblue;
     padding: 16px;
     margin: 8px;
     display: block;
-}
-
-a.danger {
-    background: red;
-    color: white;
 }
