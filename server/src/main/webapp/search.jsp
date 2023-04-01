@@ -38,7 +38,7 @@
 </sql:query>
 <%@ include file="WEB-INF/header.html" %>
 <h1>Customer</h1>
-<form action="search.jsp">
+<form action="search.jsp" autocomplete="off">
 <label>Start Date: <input type="date" name="start" onchange="this.form.submit()" value="${fn:escapeXml(param.start)}"></label>
 <label>End Date: <input type="date" name="end" onchange="this.form.submit()" value="${fn:escapeXml(param.end)}"></label>
 <label>Capacity: <select name="capacity">

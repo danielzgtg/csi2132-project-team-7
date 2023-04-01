@@ -6,3 +6,7 @@ nav > a {
     margin: 8px;
     display: block;
 }
+
+button {
+    margin: 4px;
+}

@@ -26,7 +26,7 @@
 <tr><td>Problems or Damages:</td><td>${fn:escapeXml(row.problems_or_damages)}</td></tr>
 </c:forEach>
 </table>
-<form action="room_book.jsp" method="post">
+<form action="room_book.jsp" method="post" autocomplete="off">
 <input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>

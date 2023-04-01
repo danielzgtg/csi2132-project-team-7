@@ -29,7 +29,7 @@ CREATE TABLE hotel
 (
     address_of_hotel       VARCHAR(255) NOT NULL,
     area_of_hotel          VARCHAR(255) NOT NULL REFERENCES area (area),
-    address_central_office VARCHAR(255) NOT NULL REFERENCES chain (address_central_office),
+    address_central_office VARCHAR(255) NOT NULL REFERENCES chain (address_central_office) ON DELETE CASCADE,
     ranking                SMALLINT     NOT NULL,
     contact_email_address  VARCHAR(255) NOT NULL,
     contact_phone_num      VARCHAR(255) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE room
     extended_capacity   SMALLINT     NOT NULL,
     problems_or_damages VARCHAR(255) NOT NULL,
     PRIMARY KEY (address_of_hotel, area_of_hotel, room_id),
-    FOREIGN KEY (address_of_hotel, area_of_hotel) REFERENCES hotel (address_of_hotel, area_of_hotel),
+    FOREIGN KEY (address_of_hotel, area_of_hotel) REFERENCES hotel (address_of_hotel, area_of_hotel) ON DELETE CASCADE,
     CHECK (room_price_cents > 0),
     CHECK (capacity BETWEEN 1 AND 5),
     CHECK (extended_capacity BETWEEN 1 AND 5),
@@ -68,7 +68,7 @@ CREATE TABLE offers
     room_id          INTEGER      NOT NULL,
     amenity_name     VARCHAR(255) NOT NULL REFERENCES amenity (name),
     PRIMARY KEY (address_of_hotel, area_of_hotel, room_id, amenity_name),
-    FOREIGN KEY (address_of_hotel, area_of_hotel, room_id) REFERENCES room (address_of_hotel, area_of_hotel, room_id)
+    FOREIGN KEY (address_of_hotel, area_of_hotel, room_id) REFERENCES room (address_of_hotel, area_of_hotel, room_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customer

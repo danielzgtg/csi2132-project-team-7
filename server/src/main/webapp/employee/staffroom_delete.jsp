@@ -7,22 +7,16 @@
 <% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:update dataSource="${db}">
-    DELETE FROM room WHERE room.address_of_hotel = ? AND room.area_of_hotel = ? AND room.room_id = ?;
+    DELETE FROM hotel WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?;
 <sql:param value="${param.hotel}"/>
 <sql:param value="${param.area}"/>
-<sql:param value="${Integer.parseInt(param.room)}"/>
 </sql:update>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Employee</h1>
-Room deleted
+Hotel deleted
 <table width="100%" border="1">
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
-<tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
 </table>
-<c:url value="staffroom.jsp" var="url">
-<c:param name="hotel" value="${param.hotel}" />
-<c:param name="area" value="${param.area}" />
-</c:url>
-<a href="${url}">Back to Staffroom</a>
+<a href="hotels.jsp">Back to Hotels</a>
 <%@ include file="../WEB-INF/footer.html" %>

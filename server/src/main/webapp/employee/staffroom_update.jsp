@@ -7,33 +7,31 @@
 <% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
 <sql:setDataSource dataSource="jdbc/db" var="db"/>
 <sql:update dataSource="${db}">
-    UPDATE room
-    SET room_price_cents = ?, capacity = ?, extended_capacity = ?, problems_or_damages = ? 
-    WHERE room.address_of_hotel = ? AND room.area_of_hotel = ? AND room.room_id = ?;
-<sql:param value="${Integer.parseInt(param.price)}"/>
-<sql:param value="${Integer.parseInt(param.capacity)}"/>
-<sql:param value="${Integer.parseInt(param.extended)}"/>
-<sql:param value="${param.problems}"/>
+    UPDATE hotel
+    SET ranking = ?, contact_email_address = ?, contact_phone_num = ?, manager_ssn_or_sin = ?
+    WHERE hotel.address_of_hotel = ? AND hotel.area_of_hotel = ?;
+    ;
+<sql:param value="${Integer.parseInt(param.ranking)}"/>
+<sql:param value="${param.email}"/>
+<sql:param value="${param.phone}"/>
+<sql:param value="${Integer.parseInt(param.sin)}"/>
 <sql:param value="${param.hotel}"/>
 <sql:param value="${param.area}"/>
-<sql:param value="${Integer.parseInt(param.room)}"/>
 </sql:update>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Employee</h1>
-Room updated
+Hotel updated
 <table width="100%" border="1">
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
-<tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
-<tr><td>Price:</td><td><c:out value="${param.price}"/></td></tr>
-<tr><td>Capacity:</td><td><c:out value="${param.capacity}"/></td></tr>
-<tr><td>Extended Capacity:</td><td><c:out value="${param.extended}"/></td></tr>
-<tr><td>Problems or Damages:</td><td><c:out value="${param.problems}"/></td></tr>
+<tr><td>Ranking:</td><td><c:out value="${param.ranking}"/>-star</td></tr>
+<tr><td>Email:</td><td><c:out value="${param.email}"/></td></tr>
+<tr><td>Phone:</td><td><c:out value="${param.phone}"/></td></tr>
+<tr><td>Manager SSN or SIN:</td><td><c:out value="${param.sin}"/></td></tr>
 </table>
-<c:url value="room.jsp" var="url">
+<c:url value="staffroom.jsp" var="url">
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
-<c:param name="room" value="${param.room}" />
 </c:url>
-<a href="${url}">Back to Room</a>
+<a href="${url}">Back to Staffroom</a>
 <%@ include file="../WEB-INF/footer.html" %>

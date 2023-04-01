@@ -4,25 +4,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
-<% if (!"POST".equals(request.getMethod())) { throw new SecurityException(); } %>
-<sql:setDataSource dataSource="jdbc/db" var="db"/>
-<sql:update dataSource="${db}">
-    DELETE FROM room WHERE room.address_of_hotel = ? AND room.area_of_hotel = ? AND room.room_id = ?;
-<sql:param value="${param.hotel}"/>
-<sql:param value="${param.area}"/>
-<sql:param value="${Integer.parseInt(param.room)}"/>
-</sql:update>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Employee</h1>
-Room deleted
+<form action="reception_book.jsp" method="post" autocomplete="off">
+<input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
+<input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+<input type="hidden" name="start" value="${fn:escapeXml(param.start)}"/>
 <table width="100%" border="1">
 <tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
 <tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
 <tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
+<tr><td>Start Date:</td><td><c:out value="${param.start}"/></td></tr>
+<tr><td><label for="cc">Credit Card:</label></td><td><input type="text" id="cc"></td></tr>
 </table>
-<c:url value="staffroom.jsp" var="url">
+<button>Confirm</button>
+</form>
+<c:url value="reception.jsp" var="url">
 <c:param name="hotel" value="${param.hotel}" />
 <c:param name="area" value="${param.area}" />
 </c:url>
-<a href="${url}">Back to Staffroom</a>
+<a href="${url}">Cancel</a>
 <%@ include file="../WEB-INF/footer.html" %>

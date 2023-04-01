@@ -15,15 +15,15 @@
 </sql:query>
 <%@ include file="../WEB-INF/header.html" %>
 <h1>Employee Booking</h1>
-<form action="room_update.jsp" method="post">
-<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+<form action="room_update.jsp" method="post" autocomplete="off">
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
 <table width="100%" border="1">
 <c:forEach var="row" items="${result.rows}">
-<tr><td>Room Id:</td><td>${fn:escapeXml(param.room)}</td></tr>
-<tr><td>Hotel:</td><td>${fn:escapeXml(param.hotel)}</td></tr>
-<tr><td>Hotel Area:</td><td>${fn:escapeXml(param.area)}</td></tr>
+<tr><td>Hotel:</td><td><c:out value="${param.hotel}"/></td></tr>
+<tr><td>Hotel Area:</td><td><c:out value="${param.area}"/></td></tr>
+<tr><td>Room Id:</td><td><c:out value="${param.room}"/></td></tr>
 <tr><td><label for="price">Price:</label></td><td><input type="number" id="price" name="price" value="${fn:escapeXml(row.room_price_cents)}"> cents</td></tr>
 <tr><td><label for="capacity">Capacity:</label></td><td><input type="number" id="capacity" name="capacity" value="${fn:escapeXml(row.capacity)}"></td></tr>
 <tr><td><label for="extended">Extended Capacity:</label></td><td><input type="number" id="extended" name="extended" value="${fn:escapeXml(row.extended_capacity)}"></td></tr>
@@ -33,20 +33,26 @@
 <button>Update</button>
 </form>
 <form action="room_delete.jsp" method="post">
-<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
 <button>Delete</button>
-</form><br>
-<form action="room_book.jsp" method="post">
-<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
+</form>
+<form action="room_book.jsp" method="post" autocomplete="off">
 <input type="hidden" name="hotel" value="${fn:escapeXml(param.hotel)}"/>
 <input type="hidden" name="area" value="${fn:escapeXml(param.area)}"/>
+<input type="hidden" name="room" value="${fn:escapeXml(param.room)}"/>
 <label>Start Date: <input type="date" name="start"></label><br>
 <label>End Date: <input type="date" name="end"></label><br>
 <label>Customer SSN or SIN: <input type="number" name="sin"></label><br>
 <label>Customer Full Name: <input type="text" name="customer"></label><br>
 <label>Customer Address: <input type="text" name="address"></label><br>
+<label>Credit Card: <input type="text"></label><br>
 <button>Book</button>
-</form><br>
+</form>
+<c:url value="staffroom.jsp" var="url">
+<c:param name="hotel" value="${param.hotel}" />
+<c:param name="area" value="${param.area}" />
+</c:url>
+<a href="${url}">Back to Staffroom</a>
 <%@ include file="../WEB-INF/footer.html" %>
